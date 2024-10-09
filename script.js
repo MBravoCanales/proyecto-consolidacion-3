@@ -11,19 +11,28 @@ class Carrito {
     this.productos = [];
   }
 
-  agregarProductos(producto) {
-    const productoExistente = this.productos.find(p => p.nombre === producto.nombre);
-      
+
+  agregarProductos(productoNuevo, cantidadNueva) {
+
+    const productoExistente = this.productos.find(
+      (p) => p.nombre === productoNuevo.nombre
+    );
+
     if (productoExistente) {
-      productoExistente.cantidad += producto.cantidad;
+      productoExistente.cantidad += cantidadNueva;
     } else {
-      this.productos.push(producto);
+
+      this.productos.push({
+        nombre: productoNuevo.nombre,
+        cantidad: cantidadNueva,
+        precio: productoNuevo.precio, 
+      });
     }
   }
 
   calcularTotal() {
     return this.productos.reduce((total, producto) => {
-      return total + (producto.precio * producto.cantidad);
+      return total + producto.precio * producto.cantidad;
     }, 0);
   }
 
@@ -36,13 +45,21 @@ class Carrito {
   }
 
   mostrarDetalle() {
-    this.productos.forEach(e => {
-      console.log(`Producto: ${e.nombre}, Cantidad: ${e.cantidad}, Precio por unidad: $${e.precio}`);
-    });
-    console.log(`Total de la compra: $${this.calcularTotal()}`)
+    let detalle = "Detalles de la compra\n";
+
+    if(this.productos.length == 0){
+      alert('Carrito de compras vacio')
+    }else{
+      this.productos.forEach((e) => {
+        detalle += `Producto: ${e.nombre}, Cantidad: ${e.cantidad}, Precio por unidad: $${e.precio}\n`;
+      });
+  
+      detalle += `\nTotal de la compra: $${this.calcularTotal()}`;
+  
+      alert(detalle);
+    }
+
   }
 }
 
-export {Producto, Carrito};
-
-
+export { Producto, Carrito };
